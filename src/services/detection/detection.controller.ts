@@ -8,7 +8,9 @@ export class DetectionController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadSingle(@UploadedFile() file: Express.Multer.File): any {
+  uploadSingle(
+    @UploadedFile() file: Express.Multer.File
+  ): Promise<(Uint8Array | Float32Array | Int32Array)[]> {
     return this.detectionService.detectImage(file)
   }
 }
