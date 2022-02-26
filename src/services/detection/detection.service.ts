@@ -13,6 +13,7 @@ export class DetectionService {
     const imgTensor = tf.node.decodeJpeg(file.buffer)
     const t4d = imgTensor.expandDims(0)
     const loadedModel = await loadGraphModel('file://model/model.json')
+    console.log(loadedModel, file)
     let predictionsData: Tensor<tf.Rank> | Tensor<tf.Rank>[] = []
     try {
       await loadedModel.executeAsync(t4d).then((prediction) => {

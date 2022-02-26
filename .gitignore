@@ -5,6 +5,7 @@
 
 # Model directory
 model
+dist
 
 # User-specific stuff:
 .idea/**/workspace.xml
