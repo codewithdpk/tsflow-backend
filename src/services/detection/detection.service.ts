@@ -3,7 +3,6 @@ import * as tf from '@tensorflow/tfjs-node'
 import { loadGraphModel } from '@tensorflow/tfjs-converter'
 import { HttpError } from '../../utils/error'
 import { Rank, Tensor } from '@tensorflow/tfjs-node'
-const cvstfjs = require('@microsoft/customvision-tfjs-node')
 
 @Injectable()
 export class DetectionService {
@@ -11,9 +10,8 @@ export class DetectionService {
   async detectImage(file: Express.Multer.File): Promise<Tensor<Rank> | Tensor<Rank>[]> {
     const imgTensor = tf.node.decodeJpeg(file.buffer)
     const t4d = imgTensor.expandDims(0)
-    const model = new cvstfjs.ClassificationModel()
 
-    await model.loadModelAsync('file://model/model.json')
+    const model = await loadGraphModel('file://model/model.json')
     let predictionsData: Tensor<tf.Rank> | Tensor<tf.Rank>[] = []
     try {
       predictionsData = await model.executeAsync(t4d)
