@@ -7,7 +7,7 @@ import { Rank, Tensor } from '@tensorflow/tfjs-node'
 @Injectable()
 export class DetectionService {
   private readonly logger = new Logger(DetectionService.name)
-  async detectImage(file: Express.Multer.File): Promise<Tensor<Rank> | Tensor<Rank>[]> {
+  async detectImage(file: Express.Multer.File): Promise<any> {
     const imgTensor = tf.node.decodeJpeg(file.buffer)
     const t4d = imgTensor.expandDims(0)
 
@@ -19,6 +19,10 @@ export class DetectionService {
       this.logger.log(e)
       throw HttpError(HttpStatus.PRECONDITION_FAILED, e)
     }
-    return predictionsData
+    return {
+      boxes: await predictionsData[1].array(),
+      classes: await predictionsData[2].array(),
+      scores: await predictionsData[4].array(),
+    }
   }
 }
