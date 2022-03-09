@@ -22,7 +22,6 @@ export class DetectionController {
   ): Promise<Tensor<Rank> | Tensor<Rank>[]> {
     if (file === undefined) {
       throw HttpError(HttpStatus.PRECONDITION_FAILED, 'File parameter is missing')
-      return null
     }
 
     return this.detectionService.detectImage(file)
